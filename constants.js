@@ -20,7 +20,7 @@ module.exports = {
     STRUCTURE_STORAGE: "storage",
     STRUCTURE_TERMINAL: "terminal",
     STRUCTURE_TOWER: "tower",
-    STRUCTURE_WALL: "wall",
+    STRUCTURE_WALL: "constructedWall",
   },
   partCosts: {
     TOUGH: 10,

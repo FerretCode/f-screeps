@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "@types/screeps": "^3.3.0"
+    "@types/screeps": "^3.3.0",
+    "grunt": "^1.5.3",
+    "grunt-screeps": "^1.5.0"
   },
   "scripts": {
     "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
