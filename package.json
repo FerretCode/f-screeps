@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/screeps": "^3.3.0"
+  },
+  "scripts": {
+    "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
+  }
+}
