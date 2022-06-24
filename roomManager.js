@@ -5,7 +5,7 @@ module.exports.RoomManager = class {
   constructor(roomName) {
     this.room = Game.rooms[roomName];
     this.spawnManagers = {};
-    this.queueManager = new module.exports.QueueManager(roomName);
+    this.spawnProcessor = new module.exports.SpawnProcessor(roomName);
 
     this.manageSpawns = () => {
       for (let spawn of this.room.structures.spawn) {
