@@ -7,9 +7,7 @@ module.exports.SpawnManager = class {
     this.spawnCreep = (request) => {
       const creep = request.toJSON();
 
-      this.spawn.spawnCreep(creep.body, creep.name, {
-        energyStructures: [this.spawn, this.spawn.room.structures.extensions],
-      });
+      this.spawn.spawnCreep(creep.body, creep.name);
     };
   }
 };
