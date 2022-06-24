@@ -107,37 +107,20 @@ if (!Room.prototype.structures)
         return this._sources;
       },
     },
-    harvesters: {
+    creeps: {
       get() {
-        return this.find(FIND_MY_CREEPS, {
-          filter: (c) => c.name.startsWith("harvester"),
-        });
-      },
-    },
-    builders: {
-      get() {
-        return this.find(FIND_MY_CREEPS, {
-          filter: (c) => c.name.startsWith("builder"),
-        });
-      },
-    },
-    haulers: {
-      get() {
-        return this.find(FIND_MY_CREEPS, {
-          filter: (c) => c.name.startsWith("hauler"),
-        });
-      },
-    },
-    upgraders: {
-      get() {
-        return this.find(FIND_MY_CREEPS, {
-          filter: (c) => c.name.startsWith("upgrader"),
-        });
-      },
-    },
-    allCreeps: {
-      get() {
-        return this.find(FIND_MY_CREEPS);
-      },
+        if(this._creeps) return this._creeps;
+      
+        this._creeps = {};
+      
+        for(let creep of this.find(FIND_MY_CREEPS)) {
+          const role = creep.name.slice(0, creep.name.indexOf("-"));
+        
+          if(!this._creeps[role])
+            this._creeps[role] = [];
+        
+          this._creeps[role].push(creep);
+        }
+      }
     },
   });
