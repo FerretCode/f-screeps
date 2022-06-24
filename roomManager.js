@@ -29,31 +29,30 @@ module.exports.RoomManager = class {
   }
 };
 
-module.exports.QueueManager = class {
+module.exports.SpawnProcessor = class {
   constructor(roomName) {
     this.room = Game.rooms[roomName];
 
     this.checkSpawnConditions = () => {
       const spawn = this.room.structures.spawn[0];
       const manager = global.rooms[roomName].manager.spawnManagers[spawn.name];
-      const queue = manager.queue.queue;
       
       if (
         this.room.harvesters.length < this.room.sources.length
       )
-        return queue.addToSpawnQueue(
+        return manager.spawnCreep(
           new SpawnRequest("harvester", [WORK, MOVE], [WORK, MOVE], roomName)
         );
 
       if (this.room.haulers.length < this.room.harvesters.length * 2)
-        return queue.addToSpawnQueue(
+        return manager.spawnCreep(
           new SpawnRequest("hauler", [MOVE, CARRY], [MOVE, CARRY], roomName)
         );
 
       if (this.room.upgraders.length < 3) {
         if (this.room.haulers.length !== this.room.harvesters.length) return;
 
-        return queue.addToSpawnQueue(
+        return manager.spawnCreep(
           new SpawnRequest(
             "upgrader",
             [WORK, MOVE, CARRY],
@@ -66,7 +65,7 @@ module.exports.QueueManager = class {
       if (this.room.builders.length < 3) {
         if (this.room.controller.level < 2) return;
 
-        return queue.addToSpawnQueue(
+        return manager.spawnCreep(
           new SpawnRequest(
             "builder",
             [WORK, MOVE, CARRY],

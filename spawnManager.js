@@ -3,10 +3,11 @@ const constants = require("./constants");
 module.exports.SpawnManager = class {
   constructor(spawnName) {
     this.spawn = Game.spawns[spawnName];
-    this.processor = new module.exports.SpawnRequestProcessor();
 
-    this.spawnCreep = () => {
-      this.spawn.spawnCreep(this.queue[0].body, this.queue[0].name, {
+    this.spawnCreep = (request) => {
+      const creep = request.toJSON();
+
+      this.spawn.spawnCreep(creep.body, creep.name, {
         energyStructures: [this.spawn, this.spawn.room.structures.extensions],
       });
     };
@@ -39,7 +40,7 @@ module.exports.SpawnRequest = class {
       ) {
         body.push(this.expansion);
       }
-   };
+    };
 
     this.generateName = () =>
       `${this.role}-${Math.floor(Math.random() * 10000)}`;
@@ -54,17 +55,3 @@ module.exports.SpawnRequest = class {
   }
 };
 
-module.exports.SpawnRequestProcessor = class {
-  constructor() {
-    this.requests = [];
-    this.spawnPriority = ["harvester", "hauler", "upgrader", "builder"];
-
-    this.addRequest = (request) => {
-      this.requests.push(request.toJSON());
-      
-      this.requests.sort(
-        (a, b) => this.spawnPriority.indexOf(a) >= this.spawnPriority.indexOf(b)
-      );
-    };
-  }
-};
