@@ -34,20 +34,26 @@ module.exports.SpawnProcessor = class {
       const spawn = this.room.structures.spawn[0];
       const manager = global.rooms[roomName].manager.spawnManagers[spawn.name];
 
-      console.log(JSON.stringify(this.room.creeps, null, 2));
+      console.log(this.room.creeps.harvester.length, this.room.sources.length);
 
       if (this.room.creeps.harvester.length < this.room.sources.length)
         return manager.spawnCreep(
           new SpawnRequest("harvester", [WORK, MOVE], [WORK, MOVE], roomName)
         );
 
-      if (this.room.creeps.hauler.length < this.room.harvesters.length * 2)
+      if (
+        this.room.creeps.hauler.length <
+        this.room.creeps.harvester.length * 2
+      )
         return manager.spawnCreep(
           new SpawnRequest("hauler", [MOVE, CARRY], [MOVE, CARRY], roomName)
         );
 
       if (this.room.creeps.upgrader.length < 3) {
-        if (this.room.haulers.length !== this.room.harvesters.length) return;
+        if (
+          this.room.creeps.hauler.length !== this.room.creeps.harvester.length
+        )
+          return;
 
         return manager.spawnCreep(
           new SpawnRequest(
