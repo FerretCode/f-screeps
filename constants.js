@@ -32,4 +32,10 @@ module.exports = {
     HEAL: 250,
     CLAIM: 600,
   },
+  roles: {
+    HARVESTER: "harvester",
+    HAULER: "hauler",
+    BUILDER: "builder",
+    UPGRADER: "upgrader",
+  },
 };

@@ -11,12 +11,9 @@ module.exports.RoomManager = class {
       for (let spawn of this.room.structures.spawn) {
         if (!this.spawnManagers[spawn.name])
           this.spawnManagers[spawn.name] = new SpawnManager(spawn.name);
- 
-        if (this.spawnManagers[spawn.name].queue.length > 0)
-          this.spawnManagers[spawn.name].spawnCreep();
       }
 
-      this.queueManager.checkSpawnConditions();
+      this.spawnProcessor.checkSpawnConditions();
     };
 
     this.runCreeps = () => {
@@ -36,20 +33,20 @@ module.exports.SpawnProcessor = class {
     this.checkSpawnConditions = () => {
       const spawn = this.room.structures.spawn[0];
       const manager = global.rooms[roomName].manager.spawnManagers[spawn.name];
-      
-      if (
-        this.room.harvesters.length < this.room.sources.length
-      )
+
+      console.log(JSON.stringify(this.room.creeps, null, 2));
+
+      if (this.room.creeps.harvester.length < this.room.sources.length)
         return manager.spawnCreep(
           new SpawnRequest("harvester", [WORK, MOVE], [WORK, MOVE], roomName)
         );
 
-      if (this.room.haulers.length < this.room.harvesters.length * 2)
+      if (this.room.creeps.hauler.length < this.room.harvesters.length * 2)
         return manager.spawnCreep(
           new SpawnRequest("hauler", [MOVE, CARRY], [MOVE, CARRY], roomName)
         );
 
-      if (this.room.upgraders.length < 3) {
+      if (this.room.creeps.upgrader.length < 3) {
         if (this.room.haulers.length !== this.room.harvesters.length) return;
 
         return manager.spawnCreep(
@@ -62,7 +59,7 @@ module.exports.SpawnProcessor = class {
         );
       }
 
-      if (this.room.builders.length < 3) {
+      if (this.room.creeps.builder.length < 3) {
         if (this.room.controller.level < 2) return;
 
         return manager.spawnCreep(
@@ -78,7 +75,11 @@ module.exports.SpawnProcessor = class {
   }
 };
 
-if (!Room.prototype.structures)
+if (
+  !Room.prototype.structures ||
+  !Room.prototype.sources ||
+  !Room.prototype.creeps
+)
   Object.defineProperties(Room.prototype, {
     structures: {
       get() {
@@ -108,18 +109,23 @@ if (!Room.prototype.structures)
     },
     creeps: {
       get() {
-        if(this._creeps) return this._creeps;
-      
+        if (this._creeps) return this._creeps;
+
         this._creeps = {};
-      
-        for(let creep of this.find(FIND_MY_CREEPS)) {
-          const role = creep.name.slice(0, creep.name.indexOf("-"));
-        
-          if(!this._creeps[role])
+
+        for (let role of Object.values(constants.roles))
+          if (!this._creeps[role]) {
+            console.log(role);
             this._creeps[role] = [];
-        
+          }
+
+        for (let creep of this.find(FIND_MY_CREEPS)) {
+          const role = creep.name.slice(0, creep.name.indexOf("-"));
+
+          if (!this._creeps[role]) this._creeps[role] = [];
+
           this._creeps[role].push(creep);
         }
-      }
+      },
     },
   });
