@@ -18,7 +18,7 @@ module.exports.RoomManager = class {
 
     this.runCreeps = () => {
       for (const role of Object.values(constants.roles)) {
-        for(const creep of this.room.creeps[role]) {
+        for (const creep of this.room.creeps[role]) {
           const roleModule = require(role);
 
           const creepClass = new roleModule.Creep(creep.name);
@@ -37,8 +37,6 @@ module.exports.SpawnProcessor = class {
     this.checkSpawnConditions = () => {
       const spawn = this.room.structures.spawn[0];
       const manager = global.rooms[roomName].manager.spawnManagers[spawn.name];
-
-      console.log(this.room.creeps.harvester.length, this.room.sources.length);
 
       if (this.room.creeps.harvester.length < this.room.sources.length)
         return manager.spawnCreep(
@@ -111,8 +109,6 @@ if (
         if (this._sources) return this._sources;
 
         this._sources = [];
-
-        console.log(this.find(FIND_SOURCES));
 
         for (let source of this.find(FIND_SOURCES)) this._sources.push(source);
 
