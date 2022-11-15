@@ -17,10 +17,14 @@ module.exports.RoomManager = class {
     };
 
     this.runCreeps = () => {
-      for (let creep in this.room.allCreeps) {
-        const role = require(`${creep.name.slice(0, creep.name.indexOf("-"))}`);
+      for (const role of Object.values(constants.roles)) {
+        for(const creep of this.room.creeps[role]) {
+          const roleModule = require(role);
 
-        role.run();
+          const creepClass = new roleModule.Creep(creep.name);
+
+          creepClass.run();
+        }
       }
     };
   }
@@ -108,7 +112,9 @@ if (
 
         this._sources = [];
 
-        for (let source in this.find(FIND_SOURCES)) this._sources.push(source);
+        console.log(this.find(FIND_SOURCES));
+
+        for (let source of this.find(FIND_SOURCES)) this._sources.push(source);
 
         return this._sources;
       },
@@ -121,7 +127,6 @@ if (
 
         for (let role of Object.values(constants.roles))
           if (!this._creeps[role]) {
-            console.log(role);
             this._creeps[role] = [];
           }
 
