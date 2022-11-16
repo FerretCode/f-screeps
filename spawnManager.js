@@ -7,11 +7,7 @@ module.exports.SpawnManager = class {
     this.spawnCreep = (request) => {
       const creep = request.toJSON();
 
-      this.spawn.spawnCreep(creep.body, creep.name, { 
-        memory: {
-          originRoom: this.spawn.room.name 
-        }
-      });
+      this.spawn.spawnCreep(creep.body, creep.name);
     };
   }
 };
@@ -30,7 +26,7 @@ module.exports.SpawnRequest = class {
         .map((p) => constants.partCosts[p])
         .reduce((total, a) => a + total);
 
-      let body = [];
+      let finalBody = [...this.body];
 
       for (
         let i = 0;
@@ -40,8 +36,10 @@ module.exports.SpawnRequest = class {
         );
         i++
       ) {
-        body.push(this.expansion);
+        finalBody.push(this.expansion);
       }
+
+      return finalBody;
     };
 
     this.generateName = () =>
@@ -56,4 +54,3 @@ module.exports.SpawnRequest = class {
     };
   }
 };
-

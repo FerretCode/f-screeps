@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-screeps");
+  grunt.loadNpmTasks("grunt-contrib-watch");
 
   grunt.initConfig({
     screeps: {
@@ -12,6 +13,10 @@ module.exports = function (grunt) {
       dist: {
         src: ["./*.js"],
       },
+    },
+    watch: {
+      files: "*.js",
+      tasks: ["screeps"],
     },
   });
 };

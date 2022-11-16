@@ -106,11 +106,10 @@ if (
     },
     sources: {
       get() {
-        if (this._sources) return this._sources;
+        if (Array.isArray(this._sources) && this._sources.length > 0)
+          return this._sources;
 
-        this._sources = [];
-
-        for (let source of this.find(FIND_SOURCES)) this._sources.push(source);
+        this._sources = this.find(FIND_SOURCES);
 
         return this._sources;
       },
