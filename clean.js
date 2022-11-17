@@ -1,9 +1,18 @@
 module.exports = {
   manageDeadCreeps: () => {
-    for (let creep in Memory.creeps)
-      if (!Game.creeps[creep]) {
-        delete Memory.creeps[creep];
-      }
+    for (let room in global.rooms) {
+      const gameRoom = Game.rooms[room];
+
+      for (const role of Object.keys(gameRoom.creeps))
+        for (creep of gameRoom.creeps[role])
+          if (!Game.creeps[creep.name]) {
+            delete Memory.creeps[creep.name];
+            gameRoom.creeps[role].splice(
+              gameRoom.creeps[role].findIndex((c) => c.name === creep.name),
+              1
+            );
+          }
+    }
   },
   manageDeadRoom: () => {
     for (let room in global.rooms)
