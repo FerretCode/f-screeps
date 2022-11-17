@@ -37,6 +37,18 @@ class Creep {
 
       return source;
     };
+
+    this.transferOrUpgrade = () => {
+
+    };
+
+    this.pickupEnergy = () => {
+      if (!this.creep.memory.source) {
+        const energy = this.getEnergySource();
+
+        if (energy )
+      }
+    }
   }
 }
 
