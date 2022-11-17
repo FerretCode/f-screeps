@@ -116,7 +116,7 @@ if (
     },
     creeps: {
       get() {
-        if (this._creeps) return this._creeps;
+        // if (this._creeps) return this._creeps;
 
         this._creeps = {};
 
@@ -132,6 +132,15 @@ if (
 
           this._creeps[role].push(creep);
         }
+
+        return this._creeps;
+      },
+    },
+    droppedEnergy: {
+      get() {
+        this._droppedEnergy = this.find(FIND_DROPPED_RESOURCES);
+
+        return this._droppedEnergy;
       },
     },
   });

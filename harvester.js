@@ -23,7 +23,7 @@ class Creep {
       const harvesters = this.creep.room.creeps.harvester;
 
       const source = sources.filter(
-        (s) => !harvesters.filter((h) => h.memory.source === s.id).length
+        (s) => !harvesters.find((h) => h.memory.source === s.id)
       )[0];
 
       return source;
