@@ -4,7 +4,7 @@ module.exports = {
       const gameRoom = Game.rooms[room];
 
       for (const role of Object.keys(gameRoom.creeps))
-        for (creep of gameRoom.creeps[role])
+        for (const creep of gameRoom.creeps[role])
           if (!Game.creeps[creep.name]) {
             delete Memory.creeps[creep.name];
             gameRoom.creeps[role].splice(
