@@ -46,14 +46,30 @@ module.exports.SpawnProcessor = class {
       if (
         this.room.creeps.hauler.length <
         this.room.creeps.harvester.length * 2
-      )
+      ) {
+        let body = [MOVE, CARRY];
+        let expansion = [MOVE, CARRY];
+
+        if (this.room.creeps.upgrader.length === 0) {
+          body.push(WORK);
+          expansion.push(WORK);
+        }
+
         return manager.spawnCreep(
-          new SpawnRequest("hauler", [MOVE, CARRY], [MOVE, CARRY], roomName)
+          new SpawnRequest("hauler", body, expansion, roomName)
         );
+      }
 
       if (this.room.creeps.upgrader.length < 3) {
         if (
-          this.room.creeps.hauler.length !== this.room.creeps.harvester.length
+          this.room.creeps.hauler.length !==
+          this.room.creeps.harvester.length * 2
+        )
+          return;
+
+        if (
+          this.room.controller.level <= 2 &&
+          this.room.creeps.upgrader.length >= 2
         )
           return;
 
@@ -91,8 +107,6 @@ if (
   Object.defineProperties(Room.prototype, {
     structures: {
       get() {
-        if (this._structures) return this._structures;
-
         this._structures = {};
 
         for (let structure in constants.structures)
