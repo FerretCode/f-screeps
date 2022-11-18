@@ -20,8 +20,6 @@ module.exports.loop = () => {
 
       global.rooms[room].manager.manageSpawns();
       global.rooms[room].manager.runCreeps();
-
-      Game.profiler.profile(100);
     }
   });
 };
