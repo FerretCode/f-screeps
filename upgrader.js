@@ -43,7 +43,7 @@ class Creep {
           this.creep.memory.target = energy.id;
           target = energy;
         } else {
-          creep.say("No Sources");
+          this.creep.say("No Sources");
         }
       }
 
@@ -52,16 +52,17 @@ class Creep {
       let job = this.creep.memory.job;
 
       if (job === "pickup") {
-        this.creep.moveTo(target, { reusePath: 50 });
-        if (creep.pickup(target) === ERR_INVALID_TARGET)
+        if (this.creep.pickup(target) === ERR_INVALID_TARGET)
           this.creep.withdraw(
             target,
             RESOURCE_ENERGY,
             this.creep.store.getFreeCapacity(RESOURCE_ENERGY)
           );
+        else if (this.creep.pickup(target) === ERR_NOT_IN_RANGE)
+          this.creep.moveTo(target, { reusePath: 50 });
       } else if (job === "transfer") {
         if (
-          this.creep.upgradeController(creep.room.controller) ===
+          this.creep.upgradeController(this.creep.room.controller) ===
           ERR_NOT_IN_RANGE
         )
           this.creep.moveTo(creep.room.controller);

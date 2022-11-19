@@ -37,5 +37,6 @@ module.exports = {
     HAULER: "hauler",
     BUILDER: "builder",
     UPGRADER: "upgrader",
+    SURVEYOR: "surveyor",
   },
 };

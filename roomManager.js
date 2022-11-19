@@ -95,6 +95,16 @@ module.exports.SpawnProcessor = class {
           )
         );
       }
+
+      if (this.room.creeps.surveyor.length < 1) {
+        if (this.room.creeps.upgrader.length < 2) return;
+
+        return;
+
+        return manager.spawnCreep(
+          new SpawnRequest("surveyor", [MOVE], [], roomName)
+        );
+      }
     };
   }
 };
